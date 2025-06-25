@@ -15,6 +15,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ lectureData }) => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -23,6 +24,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ lectureData }) => {
       audioRef.current.load();
       setIsPlaying(false);
     }
+    setIsFlipped(false); // Reset flip state when card changes
   }, [currentCard]);
 
   const handlePlayPause = () => {
@@ -57,6 +59,10 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ lectureData }) => {
     setSubmitted(true);
   };
 
+  const handleCardClick = () => {
+    setIsFlipped(!isFlipped);
+  };
+
   const totalCorrect = Object.entries(quizAnswers).reduce((score, [qIndexStr, userAnswer]) => {
     const qIndex = parseInt(qIndexStr);
     return score + (lectureData.mcqs[qIndex]?.answer === userAnswer ? 1 : 0);
@@ -64,15 +70,46 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ lectureData }) => {
 
   const formatFlashcardVisual = (question: string, answer: string) => {
     return (
-      <div className="bg-gradient-to-br from-indigo-900 to-black rounded-2xl shadow-2xl p-12 w-full aspect-video flex flex-col justify-center items-start gap-4 border-4 border-indigo-700 text-white">
-        <h2 className="text-3xl font-bold font-['Orbitron']">{question}</h2>
-        <p className="text-lg text-white/90 font-['Poppins']">{answer}</p>
+      <div 
+        className="relative w-full aspect-video cursor-pointer"
+        style={{ perspective: '1000px' }}
+        onClick={handleCardClick}
+      >
+        <div 
+          className={`relative w-full h-full transition-transform duration-700 transform-gpu ${isFlipped ? 'rotate-y-180' : ''}`}
+          style={{ transformStyle: 'preserve-3d' }}
+        >
+          {/* Front of card (Question) */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-br from-indigo-900 to-black rounded-2xl shadow-2xl p-12 flex flex-col justify-center items-center gap-4 border-4 border-indigo-700 text-white"
+            style={{ backfaceVisibility: 'hidden' }}
+          >
+            <h2 className="text-3xl font-bold font-['Orbitron'] text-center">{question}</h2>
+            <p className="text-sm text-white/70 font-['Poppins'] text-center">Click to reveal answer</p>
+          </div>
+          
+          {/* Back of card (Answer) */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-br from-purple-900 to-black rounded-2xl shadow-2xl p-12 flex flex-col justify-center items-center gap-4 border-4 border-purple-700 text-white rotate-y-180"
+            style={{ backfaceVisibility: 'hidden' }}
+          >
+            <h2 className="text-2xl font-bold font-['Orbitron'] text-center mb-4">Answer:</h2>
+            <p className="text-lg text-white/90 font-['Poppins'] text-center">{answer}</p>
+            <p className="text-sm text-white/70 font-['Poppins'] text-center">Click to see question</p>
+          </div>
+        </div>
       </div>
     );
   };
 
   return (
     <div className="max-w-6xl mx-auto px-6 space-y-10">
+      <style jsx>{`
+        .rotate-y-180 {
+          transform: rotateY(180deg);
+        }
+      `}</style>
+      
       <h2 className="text-4xl text-center font-bold text-white font-['Orbitron']">
         Flashcard {currentCard + 1} of {lectureData.flashcards.length}
       </h2>

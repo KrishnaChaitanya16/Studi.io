@@ -14,29 +14,30 @@ function App() {
 
   const handleFormSubmit = async (formData: FormData) => {
     setCurrentState('loading');
-    setLoadingStep(0); // Start with step 0 (Processing content)
+    setLoadingStep(0);
+     
     
     try {
-      // Small delay to show initial step
+      
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      // Step 0: Processing content (API call)
+     
       const res = await fetch('https://studi-io.onrender.com/process', {
         method: 'POST',
         body: formData,
       });
       
-      // Move to step 1: Synthesizing voice
+      
       setLoadingStep(1);
       await new Promise(resolve => setTimeout(resolve, 800));
       
       const data = await res.json();
       
-      // Move to step 2: Creating presentation
+      
       setLoadingStep(2);
       await new Promise(resolve => setTimeout(resolve, 800));
       
-      // Format the data
+      
       const formattedFlashcards = data.flashcards.map((card: any) => ({
         question: card.front,
         answer: card.back
@@ -54,10 +55,10 @@ function App() {
         mcqs: formattedQuiz
       });
       
-      // Complete all steps (step 3 means all done)
+      
       setLoadingStep(3);
       
-      // Wait a moment to show completion, then go to results
+     
       setTimeout(() => {
         setCurrentState('results');
         setLoadingStep(0);
