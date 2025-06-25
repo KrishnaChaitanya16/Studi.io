@@ -1,0 +1,21 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore virtual environments
+venv/
+edunarrator-backend/venv/
+
+# Ignore node_modules
+frontend/node_modules/
+
+
+edunarrator-backend/.env
+
+
+frontend/dist/
+frontend/build/
+
+
+.DS_Store
+.vscode/
