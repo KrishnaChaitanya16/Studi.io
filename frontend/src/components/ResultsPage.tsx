@@ -76,8 +76,11 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ lectureData }) => {
         onClick={handleCardClick}
       >
         <div 
-          className={`relative w-full h-full transition-transform duration-700 transform-gpu ${isFlipped ? 'rotate-y-180' : ''}`}
-          style={{ transformStyle: 'preserve-3d' }}
+          className="relative w-full h-full transition-transform duration-700 transform-gpu"
+          style={{ 
+            transformStyle: 'preserve-3d',
+            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+          }}
         >
           {/* Front of card (Question) */}
           <div 
@@ -90,8 +93,11 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ lectureData }) => {
           
           {/* Back of card (Answer) */}
           <div 
-            className="absolute inset-0 bg-gradient-to-br from-purple-900 to-black rounded-2xl shadow-2xl p-12 flex flex-col justify-center items-center gap-4 border-4 border-purple-700 text-white rotate-y-180"
-            style={{ backfaceVisibility: 'hidden' }}
+            className="absolute inset-0 bg-gradient-to-br from-purple-900 to-black rounded-2xl shadow-2xl p-12 flex flex-col justify-center items-center gap-4 border-4 border-purple-700 text-white"
+            style={{ 
+              backfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg)'
+            }}
           >
             <h2 className="text-2xl font-bold font-['Orbitron'] text-center mb-4">Answer:</h2>
             <p className="text-lg text-white/90 font-['Poppins'] text-center">{answer}</p>
@@ -104,11 +110,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ lectureData }) => {
 
   return (
     <div className="max-w-6xl mx-auto px-6 space-y-10">
-      <style jsx>{`
-        .rotate-y-180 {
-          transform: rotateY(180deg);
-        }
-      `}</style>
       
       <h2 className="text-4xl text-center font-bold text-white font-['Orbitron']">
         Flashcard {currentCard + 1} of {lectureData.flashcards.length}
