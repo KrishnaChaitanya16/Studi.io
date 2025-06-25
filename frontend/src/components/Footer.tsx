@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
             <span className="text-cyan-400 font-medium">Murf AI</span>
           </div>
           <span>+</span>
-          <span className="text-pink-400 font-medium">GPT</span>
+          <span className="text-pink-400 font-medium">Gemini</span>
           <span>+</span>
           <span className="text-cyan-400 font-medium">Python</span>
         </div>
