@@ -15,7 +15,7 @@ function App() {
     setCurrentState('loading');
 
     try {
-      const res = await fetch('http://localhost:8000/process', {
+      const res = await fetch('https://studi-io.onrender.com/process', {
         method: 'POST',
         body: formData,
       });
