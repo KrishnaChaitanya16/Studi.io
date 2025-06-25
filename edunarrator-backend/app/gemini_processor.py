@@ -22,13 +22,14 @@ def generate_audio_summary(input_text: str) -> str:
     """Generate a comprehensive but concise audio summary/narration of the content"""
     trimmed_text = input_text[:MAX_INPUT_CHARS]
     prompt = (
-        "Create a concise audio narration of this content for educational purposes. "
-        "The narration should be conversational, engaging, and under 2500 characters. "
-        "Focus on the most important concepts and key takeaways. "
-        "Make it suitable for audio learning - clear and well-structured. "
-        "Avoid unnecessary details and keep it focused on core learning objectives."
-        "\n\nContent:\n" + trimmed_text
-    )
+    "Create a concise audio narration of this content for educational purposes. "
+    "The narration should be conversational, engaging, and under 2500 characters. "
+    "Focus on the most important concepts and key takeaways. "
+    "Make it suitable for audio learning — clear, structured, and easy to follow. "
+    "Strictly avoid any sound effects, intro music, stage directions, or dramatization. "
+    "Start directly with the explanation, and maintain a professional, factual tone."
+    "\n\nContent:\n" + trimmed_text
+)
 
     model = genai.GenerativeModel(MODEL_NAME)
     return safe_generate(model, prompt)
